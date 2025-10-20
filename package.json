@@ -1,0 +1,25 @@
+{
+  "name": "godot-2-ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun build src/parser.ts --outfile=dist/bundle.js --no-bundle --sourcemap=inline",
+    "test": "vitest",
+    "format": "biome check ./src ./tests --write"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.6",
+    "@types/bun": "latest",
+    "tsx": "^4.20.6",
+    "vitest": "^3.2.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "cmd-ts": "^0.14.3",
+    "glob": "^11.0.3",
+    "tree-sitter": "^0.25.0",
+    "tree-sitter-gdscript": "^5.0.1"
+  }
+}
