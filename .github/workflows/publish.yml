@@ -1,4 +1,4 @@
-name: Build and Publish to GitHub's NPM Registry
+name: Package
 
 on:
   push:
@@ -17,19 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js for GitHub Packages
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install
 
       - name: Build TypeScript project
-        run: npm run build
+        run: bun run build
 
       - name: Publish package to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish
+        run: bun publish
