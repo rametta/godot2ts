@@ -1,8 +1,6 @@
+[![Publish Package](https://github.com/rametta/godot2ts/actions/workflows/publish.yml/badge.svg)](https://github.com/rametta/godot2ts/actions/workflows/publish.yml)
+
 # 🤖 Godot to TypeScript
-
-
-[![JSR](https://jsr.io/badges/@gd-tools/godot2ts)](https://jsr.io/@gd-tools/godot2ts)
-
 
 This CLI tool generates TypeScript types and helpers based on Godot's GDScript files.
 

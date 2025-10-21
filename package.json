@@ -1,13 +1,17 @@
 {
-  "name": "@gd-tools/godot2ts",
+  "name": "@rametta/godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "bun build src/parser.ts --outfile=dist/bundle.js --no-bundle --sourcemap=inline",
     "test": "vitest",
     "format": "biome check ./src ./tests --write",
     "test:cli": "tsx src/cli.ts"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
