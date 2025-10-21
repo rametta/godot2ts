@@ -1,5 +1,9 @@
 # 🤖 Godot to TypeScript
 
+
+[![JSR](https://jsr.io/badges/@gd-tools/godot2ts)](https://jsr.io/@gd-tools/godot2ts)
+
+
 This CLI tool generates TypeScript types and helpers based on Godot's GDScript files.
 
 > *Usage instructions coming soon...*

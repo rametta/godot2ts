@@ -2,13 +2,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { command, option, run, string } from "cmd-ts";
 import { glob } from "glob";
+import jsrJson from '../jsr.json'
 import packageJson from "../package.json";
 import { parse } from "./parser";
 
 const cmd = command({
   name: packageJson.name,
   description: packageJson.description,
-  version: packageJson.version,
+  version: jsrJson.version,
   args: {
     input: option({
       type: string,
@@ -45,6 +46,7 @@ const cmd = command({
 
       const settled = await Promise.allSettled(results);
       console.log(settled);
+      // TODO: finish
     } catch (err: unknown) {
       console.error("There was an unexpected error.", err);
     }
