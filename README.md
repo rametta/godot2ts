@@ -6,6 +6,14 @@ This CLI tool generates TypeScript types and helpers based on Godot's GDScript f
 
 > *Usage instructions coming soon...*
 
+:::warning
+
+⚠️ Warning: This tool marks TypeScript as a peer-dependency and requires it to be available in `node_modules` at runtime. 
+
+This is to keep the binary smaller and flexible with whichever version of Typescript used in your project.
+
+:::
+
 ## Contributing
 
 Install dependencies:

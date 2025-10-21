@@ -3,6 +3,7 @@ import path from "node:path";
 import { command, option, run, string } from "cmd-ts";
 import { glob } from "glob";
 import packageJson from "../package.json";
+import { generate } from "./generator";
 import { parse } from "./parser";
 
 const cmd = command({
@@ -33,6 +34,8 @@ const cmd = command({
     }),
   },
   handler: async (args) => {
+    console.time("godot2ts generation time")
+
     try {
       const globPath = path.join(args.input, "**/*.gd");
       const gdScriptPaths = await glob(globPath, { ignore: args.ignore });
@@ -44,11 +47,14 @@ const cmd = command({
       });
 
       const settled = await Promise.allSettled(results);
-      console.log(settled);
+      generate()
+      // console.log(settled);
       // TODO: finish
     } catch (err: unknown) {
       console.error("There was an unexpected error.", err);
     }
+
+    console.timeEnd("godot2ts generation time")
   },
 });
 

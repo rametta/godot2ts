@@ -1,2 +1,5 @@
-// TODO
-// Generate TS code here based on data from parsing
+import typescript from 'typescript'
+
+export function generate() {
+  return typescript.factory.createJSDocAllType()
+}
