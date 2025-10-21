@@ -1,15 +1,31 @@
-# Godot -> TS
+# 🤖 Godot to TypeScript
 
-This CLI tool generates TypeScript types and helpers based on GDScript files.
+This CLI tool generates TypeScript types and helpers based on Godot's GDScript files.
 
-To install dependencies:
+> *Usage instructions coming soon...*
 
-```bash
+## Contributing
+
+Install dependencies:
+
+```sh
 bun install
 ```
 
-To run:
+Create a build
 
-```bash
-bun run dev
+```sh
+bun run build
+```
+
+Run tests
+
+```sh
+bun run test
+```
+
+Format & Lint
+
+```sh
+bun run format
 ```
