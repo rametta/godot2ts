@@ -11,7 +11,12 @@
     "test:cli": "tsx src/cli.ts"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rametta/godot2ts.git"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
