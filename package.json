@@ -3,7 +3,6 @@
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
   "version": "0.0.1",
-  "private": true,
   "scripts": {
     "build": "bun build src/parser.ts --outfile=dist/bundle.js --no-bundle --sourcemap=inline",
     "test": "vitest",
