@@ -10,7 +10,7 @@ export function generate(_output: string, classes: ClassInfo[][]) {
     createGodotImportStatement(),
     ...createInterfaces(classes),
     createResourceMapperTypeAlias(classes),
-    createInstantiateGdScriptFunction(),
+    createLoadGdScriptFunction(),
   ];
 
   const str = statementsToString(statements);
@@ -32,10 +32,14 @@ function createInterfaces(classes: ClassInfo[][]): ts.InterfaceDeclaration[] {
     }
   }
 
+  interfaces.sort((a, b) => a.name.text.localeCompare(b.name.text));
+
   return interfaces;
 }
 
 function createInterface(info: ClassInfo): ts.InterfaceDeclaration {
+  info.functions.sort((a, b) => a.name.localeCompare(b.name));
+
   return factory.createInterfaceDeclaration(
     undefined,
     factory.createIdentifier(info.name ?? filenameFromPath(info.path)),
@@ -139,6 +143,10 @@ function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDecl
     }
   }
 
+  propertySignatures.sort((a, b) =>
+    ts.isStringLiteral(a.name) && ts.isStringLiteral(b.name) ? a.name.text.localeCompare(b.name.text) : 0,
+  );
+
   return factory.createTypeAliasDeclaration(
     undefined,
     factory.createIdentifier("ResourceMapper"),
@@ -147,11 +155,11 @@ function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDecl
   );
 }
 
-function createInstantiateGdScriptFunction(): ts.FunctionDeclaration {
+function createLoadGdScriptFunction(): ts.FunctionDeclaration {
   return factory.createFunctionDeclaration(
     [factory.createToken(ts.SyntaxKind.ExportKeyword)],
     undefined,
-    factory.createIdentifier("instantiateGdScript"),
+    factory.createIdentifier("loadGdScript"),
     [
       factory.createTypeParameterDeclaration(
         undefined,

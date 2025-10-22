@@ -2,7 +2,7 @@
   "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "bin": {
     "godot2ts": "dist/index.cjs"
   },
@@ -23,7 +23,7 @@
     "url": "git+ssh://git@github.com/rametta/godot2ts.git"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.6",
+    "@biomejs/biome": "^2.2.7",
     "@types/bun": "latest",
     "tsx": "^4.20.6",
     "vitest": "^3.2.4"
