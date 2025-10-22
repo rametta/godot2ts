@@ -4,12 +4,9 @@ import factory = ts.factory;
 
 import type { ClassInfo } from "./parser";
 
-const typeOnlyImports = ["Node2D", "Vector2", "Node", "RefCounted"] as const;
-
-export function generate(output: string, classes: ClassInfo[][]) {
+export function generate(_output: string, classes: ClassInfo[][]) {
   const statements = [
-    createValueOnlyImportStatement(),
-    createTypeOnlyImportStatement(),
+    createGodotImportStatement(),
     ...createInterfaces(classes),
     createResourceMapperTypeAlias(classes),
     createInstantiateGdScriptFunction(),
@@ -44,10 +41,16 @@ function createInterface(info: ClassInfo): ts.InterfaceDeclaration {
     undefined,
     info.extendsClass
       ? [
-        factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-          factory.createExpressionWithTypeArguments(factory.createIdentifier(info.extendsClass), undefined),
-        ]),
-      ]
+          factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+            factory.createExpressionWithTypeArguments(
+              factory.createPropertyAccessExpression(
+                factory.createIdentifier("G"),
+                factory.createIdentifier(info.extendsClass),
+              ),
+              undefined,
+            ),
+          ]),
+        ]
       : [],
     info.functions.map(createInterfaceMethod),
   );
@@ -79,63 +82,43 @@ function createInterfaceMethod(func: ClassInfo["functions"][number]) {
         ),
       ),
     ],
-    func.returnType
-      ? typeStringMapper(func.returnType)
-      : factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
+    func.returnType ? typeStringMapper(func.returnType) : factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
   );
 }
 
 function typeStringMapper(typeStr: string) {
   switch (typeStr) {
-    case 'int':
-    case 'float':
+    case "int":
+    case "float":
       return factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword);
-    case 'String':
-    case 'string':
+    case "String":
+    case "string":
       return factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
-    case 'bool':
+    case "bool":
       return factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword);
-    case 'variant':
-      return factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword)
+    case "void":
+      return factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword);
+    case "Array":
+      return factory.createArrayTypeNode(factory.createKeywordTypeNode(ts.SyntaxKind.AnyKeyword));
     default:
-      return factory.createTypeReferenceNode(factory.createIdentifier(typeStr))
+      return factory.createTypeReferenceNode(
+        factory.createQualifiedName(factory.createIdentifier("G"), factory.createIdentifier(typeStr)),
+        undefined,
+      );
   }
 }
 
-function createValueOnlyImportStatement(): ts.ImportDeclaration {
+function createGodotImportStatement(): ts.ImportDeclaration {
   return factory.createImportDeclaration(
     undefined,
-    factory.createImportClause(
-      undefined,
-      undefined,
-      factory.createNamedImports([
-        factory.createImportSpecifier(false, undefined, factory.createIdentifier("ResourceLoader")),
-      ]),
-    ),
-    factory.createStringLiteral("godot"),
-    undefined,
-  );
-}
-
-function createTypeOnlyImportStatement(): ts.ImportDeclaration {
-  return factory.createImportDeclaration(
-    undefined,
-    factory.createImportClause(
-      ts.SyntaxKind.TypeKeyword,
-      undefined,
-      factory.createNamedImports(
-        typeOnlyImports.map((typeImport) =>
-          factory.createImportSpecifier(false, undefined, factory.createIdentifier(typeImport)),
-        ),
-      ),
-    ),
+    factory.createImportClause(undefined, undefined, factory.createNamespaceImport(factory.createIdentifier("G"))),
     factory.createStringLiteral("godot"),
     undefined,
   );
 }
 
 function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDeclaration {
-  const propertySignatures: ts.PropertySignature[] = []
+  const propertySignatures: ts.PropertySignature[] = [];
 
   for (const cl of classes) {
     for (const c of cl) {
@@ -144,9 +127,9 @@ function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDecl
           undefined,
           factory.createStringLiteral("res://something/something/another.gd"),
           undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier(c.name ?? 'UNKNOWN_NAME'), undefined),
-        )
-      )
+          factory.createTypeReferenceNode(factory.createIdentifier(c.name ?? "UNKNOWN_NAME"), undefined),
+        ),
+      );
     }
   }
 
@@ -196,7 +179,10 @@ function createInstantiateGdScriptFunction(): ts.FunctionDeclaration {
               factory.createPropertyAccessExpression(
                 factory.createCallExpression(
                   factory.createPropertyAccessExpression(
-                    factory.createIdentifier("ResourceLoader"),
+                    factory.createPropertyAccessExpression(
+                      factory.createIdentifier("G"),
+                      factory.createIdentifier("ResourceLoader"),
+                    ),
                     factory.createIdentifier("load"),
                   ),
                   undefined,

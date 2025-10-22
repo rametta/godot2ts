@@ -205,11 +205,10 @@ const sampleInput = [
 const expectedCode = `// THIS IS A GENERATED FILE. DO NOT EDIT MANUALLY.
 // Courtesy of Godot2TS.
 
-import { ResourceLoader } from "godot";
-import type { Node2D, Vector2, Node, RefCounted } from "godot";
-interface CameraShakeCore extends RefCounted {
+import * as G from "godot";
+interface CameraShakeCore extends G.RefCounted {
     call(fn: "_init"): void;
-    call(fn: "bind", other: unknown, host: Node2D, process_during_pause: unknown, last: boolean): void;
+    call(fn: "bind", other: unknown, host: G.Node2D, process_during_pause: unknown, last: boolean): void;
     call(fn: "unbind"): void;
     call(fn: "_on_process_frame"): void;
     call(fn: "shake", intensity: number, speed: number, duration: number, fade_in: number, fade_out: number, additive: boolean): void;
@@ -220,7 +219,7 @@ type ResourceMapper = {
     "res://something/something/another.gd": CameraShakeCore;
 };
 export function instantiateGdScript<T extends keyof ResourceMapper>(path: T): ResourceMapper[T] {
-    return ResourceLoader.load(path).call("new") as ResourceMapper[T];
+    return G.ResourceLoader.load(path).call("new") as ResourceMapper[T];
 }
 `;
 
