@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { command, number, option, run, string } from "cmd-ts";
 import { glob } from "glob";
+import ts from "typescript";
 import { description, name, version } from "../package.json";
 import { generate } from "./generator";
 import { parse } from "./parser";
@@ -82,7 +83,8 @@ const cmd = command({
       logIfVerbose(args.verbose, err);
     }
 
-    generate(args.output, classes);
+    const typeScriptCode = generate(args.output, classes);
+    ts.sys.writeFile(path.join(args.output, "generated.ts"), typeScriptCode);
     console.timeEnd("godot2ts generation time");
   },
 });

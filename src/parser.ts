@@ -3,7 +3,7 @@ import GDScript from "tree-sitter-gdscript";
 
 type Meta = { name: string; type?: string; defaultValue?: string };
 
-type ClassInfo = {
+export type ClassInfo = {
   name?: string;
   extendsClass?: string;
   exports: Meta[];
