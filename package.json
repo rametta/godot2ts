@@ -2,12 +2,12 @@
   "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "bin": {
     "godot2ts": "dist/index.cjs"
   },
   "scripts": {
-    "build": "bun build src/index.ts --outfile dist/index.cjs --target node --format cjs --external typescript",
+    "build": "bun build src/index.ts --outfile dist/index.cjs --target node --format cjs --external typescript --external tree-sitter",
     "test": "vitest",
     "format": "biome check ./src ./tests --write",
     "test:cli": "tsx src/cli.ts"
@@ -27,12 +27,12 @@
     "vitest": "^3.2.4"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^5",
+    "tree-sitter": "^0.25.0"
   },
   "dependencies": {
     "cmd-ts": "^0.14.3",
     "glob": "^11.0.3",
-    "tree-sitter": "^0.25.0",
     "tree-sitter-gdscript": "^5.0.1"
   }
 }
