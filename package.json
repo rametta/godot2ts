@@ -2,7 +2,7 @@
   "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "bin": {
     "godot2ts": "dist/index.cjs"
   },

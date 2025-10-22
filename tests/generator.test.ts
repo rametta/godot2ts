@@ -215,7 +215,7 @@ const expectedCode = `// THIS IS A GENERATED FILE. DO NOT EDIT MANUALLY.
 // Courtesy of Godot2TS.
 
 import * as G from "godot";
-interface CameraShakeCore extends G.RefCounted {
+export interface CameraShakeCore extends G.RefCounted {
     call(fn: "_init"): void;
     call(fn: "_on_process_frame"): void;
     call(fn: "bind", other: unknown, host: G.Node2D, process_during_pause: unknown, last: boolean): void;
@@ -224,7 +224,7 @@ interface CameraShakeCore extends G.RefCounted {
     call(fn: "stop"): void;
     call(fn: "unbind"): void;
 }
-interface other extends G.Node {
+export interface other extends G.Node {
 }
 type ResourceMapper = {
     "res://lorem/ipsum/other.gd": other;

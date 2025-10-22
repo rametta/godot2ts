@@ -41,7 +41,7 @@ function createInterface(info: ClassInfo): ts.InterfaceDeclaration {
   info.functions.sort((a, b) => a.name.localeCompare(b.name));
 
   return factory.createInterfaceDeclaration(
-    undefined,
+    [factory.createToken(ts.SyntaxKind.ExportKeyword)],
     factory.createIdentifier(info.name ?? filenameFromPath(info.path)),
     undefined,
     info.extendsClass
