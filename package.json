@@ -2,7 +2,7 @@
   "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "bin": {
     "godot2ts": "dist/index.cjs"
   },
@@ -21,9 +21,6 @@
     "type": "git",
     "url": "git+ssh://git@github.com/rametta/godot2ts.git"
   },
-  "trustedDependencies": [
-    "node-gyp-build"
-  ],
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
     "@types/bun": "latest",
@@ -38,5 +35,10 @@
     "glob": "^11.0.3",
     "tree-sitter": "^0.25.0",
     "tree-sitter-gdscript": "^5.0.1"
-  }
+  },
+  "trustedDependencies": [
+    "esbuild",
+    "tree-sitter",
+    "tree-sitter-gdscript"
+  ]
 }
