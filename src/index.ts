@@ -34,7 +34,7 @@ const cmd = command({
     }),
   },
   handler: async (args) => {
-    console.time("godot2ts generation time")
+    console.time("godot2ts generation time");
 
     try {
       const globPath = path.join(args.input, "**/*.gd");
@@ -46,15 +46,13 @@ const cmd = command({
         return parsed;
       });
 
-      const settled = await Promise.allSettled(results);
-      generate()
-      // console.log(settled);
-      // TODO: finish
+      const classes = await Promise.all(results);
+      generate(args.output, classes);
     } catch (err: unknown) {
       console.error("There was an unexpected error.", err);
     }
 
-    console.timeEnd("godot2ts generation time")
+    console.timeEnd("godot2ts generation time");
   },
 });
 
