@@ -22,9 +22,7 @@ godot2ts
 
 
 > [!IMPORTANT]
-> This tool marks **TypeScript** & **tree-sitter** as a **peer-dependency** and requires it to be available in `node_modules` at runtime. 
-> 
-> Tree sitter requires platform specific binaries to be prebuilt.
+> This tool marks **TypeScript** as a **peer-dependency** and requires it to be available in `node_modules` at runtime. 
 
 ## Contributing
 
