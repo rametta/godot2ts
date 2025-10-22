@@ -1,8 +1,8 @@
 {
-  "name": "@rametta/godot2ts",
+  "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "bin": {
     "godot2ts": "./dist/index.cjs"
   },
@@ -13,8 +13,8 @@
     "test:cli": "tsx src/cli.ts"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "repository": {
     "type": "git",
