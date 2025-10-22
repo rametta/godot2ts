@@ -208,6 +208,5 @@ const expectedSampleResult = [
 
 test("parse", () => {
   const classes = parse(sample);
-  console.log(classes);
   expect(classes).toStrictEqual(expectedSampleResult);
 });
