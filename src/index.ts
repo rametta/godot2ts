@@ -1,15 +1,17 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { command, option, run, string } from "cmd-ts";
+import { command, number, option, run, string } from "cmd-ts";
 import { glob } from "glob";
-import packageJson from "../package.json";
+import { description, name, version } from "../package.json";
 import { generate } from "./generator";
 import { parse } from "./parser";
 
+const logIfVerbose = (cond: number, err: unknown) => (cond ? console.error(err) : null);
+
 const cmd = command({
-  name: packageJson.name,
-  description: packageJson.description,
-  version: packageJson.version,
+  name,
+  description,
+  version,
   args: {
     input: option({
       type: string,
@@ -32,26 +34,55 @@ const cmd = command({
       defaultValue: () => "node_modules/**",
       description: "Glob path to ignore when searching for gdscript files in the input. Default: 'node_modules/**'",
     }),
+    verbose: option({
+      type: number,
+      long: "verbose",
+      short: "v",
+      defaultValue: () => 0,
+      description: "If extra verbose logs should be printed when errors occur. Example: -v 1. Default: 0",
+    }),
   },
   handler: async (args) => {
     console.time("godot2ts generation time");
 
+    const globPath = path.join(args.input, "**/*.gd");
+
+    let gdScriptPaths: string[] = [];
+
     try {
-      const globPath = path.join(args.input, "**/*.gd");
-      const gdScriptPaths = await glob(globPath, { ignore: args.ignore });
-
-      const results = gdScriptPaths.map(async (gdScriptPath) => {
-        const gdScript = await fs.readFile(gdScriptPath, { encoding: "utf-8" });
-        const parsed = parse(gdScript);
-        return parsed;
-      });
-
-      const classes = await Promise.all(results);
-      generate(args.output, classes);
+      gdScriptPaths = await glob(globPath, { ignore: args.ignore });
     } catch (err: unknown) {
-      console.error("There was an unexpected error.", err);
+      console.error("There was an error with the input glob path");
+      logIfVerbose(args.verbose, err);
     }
 
+    const results = gdScriptPaths.map(async (gdScriptPath) => {
+      let gdScript: string | null = null;
+
+      try {
+        gdScript = await fs.readFile(gdScriptPath, { encoding: "utf-8" });
+      } catch (err: unknown) {
+        console.error(`There was an error reading the file: ${gdScriptPath}`);
+        logIfVerbose(args.verbose, err);
+      }
+
+      if (gdScript) {
+        const parsed = parse(gdScript);
+        return parsed;
+      }
+
+      return [];
+    });
+
+    let classes: ReturnType<typeof parse>[] = [];
+    try {
+      classes = await Promise.all(results);
+    } catch (err: unknown) {
+      console.error("There was an error trying to parse the result set");
+      logIfVerbose(args.verbose, err);
+    }
+
+    generate(args.output, classes);
     console.timeEnd("godot2ts generation time");
   },
 });

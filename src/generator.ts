@@ -1,3 +1,4 @@
+import path from "node:path";
 import ts from "typescript";
 
 import factory = ts.factory;
@@ -13,7 +14,7 @@ export function generate(output: string, _classes: unknown[]) {
   ];
 
   const str = statementsToString(statements);
-  ts.sys.writeFile(output, str);
+  ts.sys.writeFile(path.join(output, "generated.ts"), str);
 }
 
 function generateValueOnlyImportStatement(): ts.ImportDeclaration {

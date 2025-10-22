@@ -139,7 +139,7 @@ function extractClasses(tree: Parser.Tree): ClassInfo[] {
 
         const func = {
           name: funcName,
-          returnType: node.returnTypeNode.children?.find(isIdentifierNode)?.text,
+          returnType: node.returnTypeNode?.children?.find(isIdentifierNode)?.text,
           parameters,
         };
 
@@ -205,12 +205,12 @@ interface NameNode extends Parser.SyntaxNode {
 
 interface ConstructorDefinitionNode extends Parser.SyntaxNode {
   type: "constructor_definition";
-  returnTypeNode: TypeNode;
+  returnTypeNode?: TypeNode;
 }
 
 interface FunctionDefinitionNode extends Parser.SyntaxNode {
   type: "function_definition";
-  returnTypeNode: TypeNode;
+  returnTypeNode?: TypeNode;
   nameNode: NameNode;
 }
 
