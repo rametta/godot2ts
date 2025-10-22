@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { expect, test } from "vitest";
-import { parse } from "../src/parser";
+import { type ClassInfo, parse } from "../src/parser";
 
 const sample = fs.readFileSync(path.resolve("./tests/sample.gd"), { encoding: "utf8" });
 
-const expectedSampleResult = [
+const expectedSampleResult: ClassInfo[] = [
   {
+    path: "/test/path/test.gd",
     name: "CameraShakeCore",
     extendsClass: "RefCounted",
     exports: [
@@ -207,6 +208,6 @@ const expectedSampleResult = [
 ];
 
 test("parse", () => {
-  const classes = parse(sample);
+  const classes = parse("/test/path/test.gd", sample);
   expect(classes).toStrictEqual(expectedSampleResult);
 });

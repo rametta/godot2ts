@@ -9,16 +9,20 @@ This CLI tool generates TypeScript types and helpers based on Godot's GDScript f
 Install
 
 ```sh
+# local project
 bun i godot2ts
+
+# global
+bun i -g godot2ts
 ```
 
 Use
 
 ```sh
-godot2ts
+godot2ts --help
 ```
 
-> *More usage instructions coming soon...*
+The default command with no arguments will scan the current working directory recursively for `.gd` files and will generate one typescript file with all gd scripts converted to typescript.
 
 
 > [!IMPORTANT]

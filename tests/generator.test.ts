@@ -1,8 +1,10 @@
 import { expect, test } from "vitest";
 import { generate } from "../src/generator";
+import type { ClassInfo } from "../src/parser";
 
-const sampleInput = [
+const sampleInput: ClassInfo[] = [
   {
+    path: "something/something/camera_shake_core.gd",
     name: "CameraShakeCore",
     extendsClass: "RefCounted",
     exports: [
@@ -216,7 +218,7 @@ interface CameraShakeCore extends G.RefCounted {
     call(fn: "is_active"): boolean;
 }
 type ResourceMapper = {
-    "res://something/something/another.gd": CameraShakeCore;
+    "res://something/something/camera_shake_core.gd": CameraShakeCore;
 };
 export function instantiateGdScript<T extends keyof ResourceMapper>(path: T): ResourceMapper[T] {
     return G.ResourceLoader.load(path).call("new") as ResourceMapper[T];

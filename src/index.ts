@@ -25,8 +25,8 @@ const cmd = command({
       type: string,
       long: "output",
       short: "o",
-      defaultValue: () => "typings",
-      description: "The output folder to place the generated typescript files. Default: 'typings'",
+      defaultValue: () => ".",
+      description: "The output folder to place the generated typescript file. Default: '.'",
     }),
     ignore: option({
       type: string,
@@ -68,7 +68,7 @@ const cmd = command({
       }
 
       if (gdScript) {
-        const parsed = parse(gdScript);
+        const parsed = parse(gdScriptPath, gdScript);
         return parsed;
       }
 

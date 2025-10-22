@@ -4,22 +4,23 @@ import GDScript from "tree-sitter-gdscript";
 type Meta = { name: string; type?: string; defaultValue?: string };
 
 export type ClassInfo = {
-  name?: string;
+  path: string;
+  name: string;
   extendsClass?: string;
   exports: Meta[];
   variables: Array<Meta & { isPrivate: boolean }>;
   functions: Array<{ name: string; returnType?: string; parameters: Meta[] }>;
 };
 
-export function parse(gdscript: string) {
+export function parse(path: string, gdscript: string) {
   const parser = new Parser();
   parser.setLanguage(GDScript as Parser.Language);
 
   const tree = parser.parse(gdscript);
-  return extractClasses(tree);
+  return extractClasses(path, tree);
 }
 
-function extractClasses(tree: Parser.Tree): ClassInfo[] {
+function extractClasses(path: string, tree: Parser.Tree): ClassInfo[] {
   const classes: ClassInfo[] = [];
   let insideFunction = false;
 
@@ -33,6 +34,7 @@ function extractClasses(tree: Parser.Tree): ClassInfo[] {
         let classInfo = classes.find((c) => c.name === nameNode.text);
         if (!classInfo) {
           classInfo = {
+            path,
             name: nameNode.text,
             extendsClass:
               node.previousNamedSibling && isExtendsStatement(node.previousNamedSibling)
@@ -78,6 +80,8 @@ function extractClasses(tree: Parser.Tree): ClassInfo[] {
         // Add to the current class (create if none exists)
         if (classes.length === 0) {
           classes.push({
+            path: "",
+            name: "",
             exports: [],
             variables: [],
             functions: [],
@@ -146,6 +150,8 @@ function extractClasses(tree: Parser.Tree): ClassInfo[] {
         // Add to the current class (create if none exists)
         if (classes.length === 0) {
           classes.push({
+            path: "",
+            name: "",
             exports: [],
             variables: [],
             functions: [],

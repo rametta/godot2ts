@@ -125,7 +125,7 @@ function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDecl
       propertySignatures.push(
         factory.createPropertySignature(
           undefined,
-          factory.createStringLiteral("res://something/something/another.gd"),
+          factory.createStringLiteral(`res://${c.path}`),
           undefined,
           factory.createTypeReferenceNode(factory.createIdentifier(c.name ?? "UNKNOWN_NAME"), undefined),
         ),
