@@ -32,6 +32,9 @@ jobs:
       - name: Run tests
         run: bun run test
 
+      - name: Run format & lint checker
+        run: bun run check
+
       - name: Build TypeScript project
         run: bun run build
 

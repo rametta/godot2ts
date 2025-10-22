@@ -1,3 +1,4 @@
+import path from "node:path";
 import ts from "typescript";
 
 import factory = ts.factory;
@@ -37,7 +38,7 @@ function createInterfaces(classes: ClassInfo[][]): ts.InterfaceDeclaration[] {
 function createInterface(info: ClassInfo): ts.InterfaceDeclaration {
   return factory.createInterfaceDeclaration(
     undefined,
-    factory.createIdentifier(info.name ?? "UNKNOWN_NAME"),
+    factory.createIdentifier(info.name ?? filenameFromPath(info.path)),
     undefined,
     info.extendsClass
       ? [
@@ -117,6 +118,11 @@ function createGodotImportStatement(): ts.ImportDeclaration {
   );
 }
 
+// Takes a path like: '/wefherf/erf/hello.gd' and return 'hello'
+function filenameFromPath(filePath: string): string {
+  return path.basename(filePath, path.extname(filePath));
+}
+
 function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDeclaration {
   const propertySignatures: ts.PropertySignature[] = [];
 
@@ -127,7 +133,7 @@ function createResourceMapperTypeAlias(classes: ClassInfo[][]): ts.TypeAliasDecl
           undefined,
           factory.createStringLiteral(`res://${c.path}`),
           undefined,
-          factory.createTypeReferenceNode(factory.createIdentifier(c.name ?? "UNKNOWN_NAME"), undefined),
+          factory.createTypeReferenceNode(factory.createIdentifier(c.name ?? filenameFromPath(c.path)), undefined),
         ),
       );
     }

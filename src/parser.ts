@@ -5,7 +5,7 @@ type Meta = { name: string; type?: string; defaultValue?: string };
 
 export type ClassInfo = {
   path: string;
-  name: string;
+  name?: string;
   extendsClass?: string;
   exports: Meta[];
   variables: Array<Meta & { isPrivate: boolean }>;
@@ -80,8 +80,7 @@ function extractClasses(path: string, tree: Parser.Tree): ClassInfo[] {
         // Add to the current class (create if none exists)
         if (classes.length === 0) {
           classes.push({
-            path: "",
-            name: "",
+            path,
             exports: [],
             variables: [],
             functions: [],
@@ -118,20 +117,20 @@ function extractClasses(path: string, tree: Parser.Tree): ClassInfo[] {
           paramsNode.children.forEach((child) => {
             if (isTypedParameterNode(child)) {
               parameters.push({
-                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_NAME",
+                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_PARAM_NAME",
                 type: child.typeNode.text,
                 defaultValue: child.children.find(isValueNode)?.text,
               });
             } else if (isDefaultParameterNode(child)) {
               parameters.push({
-                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_NAME",
+                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_PARAM_NAME",
                 // TODO: this type here probably won't ever populate - probably need to infer the type somehow
                 type: child.children.find(isTypeNode)?.children?.find(isIdentifierNode)?.text,
                 defaultValue: child.valueNode.text,
               });
             } else if (isTypedDefaultParameterNode(child)) {
               parameters.push({
-                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_NAME",
+                name: child.namedChildren.find(isIdentifierNode)?.text ?? "UNKNOWN_PARAM_NAME",
                 type: child.typeNode.text,
                 defaultValue: child.valueNode.text,
               });
@@ -150,8 +149,7 @@ function extractClasses(path: string, tree: Parser.Tree): ClassInfo[] {
         // Add to the current class (create if none exists)
         if (classes.length === 0) {
           classes.push({
-            path: "",
-            name: "",
+            path,
             exports: [],
             variables: [],
             functions: [],

@@ -4,6 +4,13 @@ import type { ClassInfo } from "../src/parser";
 
 const sampleInput: ClassInfo[] = [
   {
+    path: "lorem/ipsum/other.gd",
+    extendsClass: "Node",
+    exports: [],
+    variables: [],
+    functions: [],
+  },
+  {
     path: "something/something/camera_shake_core.gd",
     name: "CameraShakeCore",
     extendsClass: "RefCounted",
@@ -208,6 +215,8 @@ const expectedCode = `// THIS IS A GENERATED FILE. DO NOT EDIT MANUALLY.
 // Courtesy of Godot2TS.
 
 import * as G from "godot";
+interface other extends G.Node {
+}
 interface CameraShakeCore extends G.RefCounted {
     call(fn: "_init"): void;
     call(fn: "bind", other: unknown, host: G.Node2D, process_during_pause: unknown, last: boolean): void;
@@ -218,6 +227,7 @@ interface CameraShakeCore extends G.RefCounted {
     call(fn: "is_active"): boolean;
 }
 type ResourceMapper = {
+    "res://lorem/ipsum/other.gd": other;
     "res://something/something/camera_shake_core.gd": CameraShakeCore;
 };
 export function instantiateGdScript<T extends keyof ResourceMapper>(path: T): ResourceMapper[T] {
