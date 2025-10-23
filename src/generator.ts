@@ -7,7 +7,7 @@ import type { ClassInfo } from "./parser";
 
 export function generate(_output: string, classes: ClassInfo[][]) {
   const statements = [
-    createGodotImportStatement(),
+    ...createGodotImportStatement(),
     ...createInterfaces(classes),
     createResourceMapperTypeAlias(classes),
     createLoadGdScriptFunction(),
@@ -113,13 +113,31 @@ function typeStringMapper(typeStr: string) {
   }
 }
 
-function createGodotImportStatement(): ts.ImportDeclaration {
-  return factory.createImportDeclaration(
-    undefined,
-    factory.createImportClause(undefined, undefined, factory.createNamespaceImport(factory.createIdentifier("G"))),
-    factory.createStringLiteral("godot"),
-    undefined,
-  );
+function createGodotImportStatement(): ts.ImportDeclaration[] {
+  return [
+    factory.createImportDeclaration(
+      undefined,
+      factory.createImportClause(
+        ts.SyntaxKind.TypeKeyword,
+        undefined,
+        factory.createNamespaceImport(factory.createIdentifier("G")),
+      ),
+      factory.createStringLiteral("godot"),
+      undefined,
+    ),
+    factory.createImportDeclaration(
+      undefined,
+      factory.createImportClause(
+        undefined,
+        undefined,
+        factory.createNamedImports([
+          factory.createImportSpecifier(false, undefined, factory.createIdentifier("ResourceLoader")),
+        ]),
+      ),
+      factory.createStringLiteral("godot"),
+      undefined,
+    ),
+  ];
 }
 
 // Takes a path like: '/wefherf/erf/hello.gd' and return 'hello'
@@ -193,10 +211,7 @@ function createLoadGdScriptFunction(): ts.FunctionDeclaration {
               factory.createPropertyAccessExpression(
                 factory.createCallExpression(
                   factory.createPropertyAccessExpression(
-                    factory.createPropertyAccessExpression(
-                      factory.createIdentifier("G"),
-                      factory.createIdentifier("ResourceLoader"),
-                    ),
+                    factory.createIdentifier("ResourceLoader"),
                     factory.createIdentifier("load"),
                   ),
                   undefined,
