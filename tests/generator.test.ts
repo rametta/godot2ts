@@ -237,6 +237,6 @@ export function loadGdScript<T extends keyof ResourceMapper>(path: T): ResourceM
 `;
 
 test("generate", () => {
-  const typescriptCode = generate("test/path", [sampleInput]);
+  const typescriptCode = generate([sampleInput]);
   expect(typescriptCode).toStrictEqual(expectedCode);
 });

@@ -51,7 +51,7 @@ const cmd = command({
     let gdScriptPaths: string[] = [];
 
     try {
-      gdScriptPaths = await glob(globPath, { ignore: args.ignore });
+      gdScriptPaths = await glob(globPath, { ignore: args.ignore, windowsPathsNoEscape: true, platform: "linux" });
     } catch (err: unknown) {
       console.error("There was an error with the input glob path");
       logIfVerbose(args.verbose, err);
@@ -83,7 +83,7 @@ const cmd = command({
       logIfVerbose(args.verbose, err);
     }
 
-    const typeScriptCode = generate(args.output, classes);
+    const typeScriptCode = generate(classes);
     ts.sys.writeFile(path.join(args.output, "generated.ts"), typeScriptCode);
     console.timeEnd("godot2ts generation time");
   },

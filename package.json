@@ -2,7 +2,7 @@
   "name": "godot2ts",
   "description": "Generate Typescript Types based on GDScript Files",
   "type": "module",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "bin": {
     "godot2ts": "dist/index.cjs"
   },
@@ -11,8 +11,7 @@
     "build": "bun build src/index.ts --outfile dist/index.cjs --target node --format cjs --external typescript --external tree-sitter --external tree-sitter-gdscript && echo '#!/usr/bin/env node' | cat - dist/index.cjs > temp && mv temp dist/index.cjs && chmod +x dist/index.cjs",
     "test": "vitest",
     "format": "biome check ./src ./tests --write",
-    "check": "biome check ./src ./tests ",
-    "test:cli": "tsx src/cli.ts"
+    "check": "biome check ./src ./tests "
   },
   "publishConfig": {
     "access": "public",

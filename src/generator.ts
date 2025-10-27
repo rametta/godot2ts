@@ -5,7 +5,7 @@ import factory = ts.factory;
 
 import type { ClassInfo } from "./parser";
 
-export function generate(_output: string, classes: ClassInfo[][]) {
+export function generate(classes: ClassInfo[][]) {
   const statements = [
     ...createGodotImportStatement(),
     ...createInterfaces(classes),
